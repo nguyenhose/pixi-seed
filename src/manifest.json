@@ -1,0 +1,16 @@
+{
+    "bundles": [
+        {
+            "name": "default",
+            "assets": []
+        },
+        {
+            "name": "game-screen",
+            "assets": []
+        },
+        {
+            "name": "preload",
+            "assets": []
+        }
+    ]
+}
