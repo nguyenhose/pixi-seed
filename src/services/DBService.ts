@@ -11,5 +11,5 @@ export const DBService =  {
       provider = provider ? provider : localStorage;
       console.log(`save ${keyName} with value: ${value}`);
       provider.setItem(keyName, value);
-  },
+    }
 }

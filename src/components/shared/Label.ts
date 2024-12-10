@@ -1,8 +1,9 @@
 import { TextStyleOptions, Text, TextStyle } from 'pixi.js';
 
 const defaultLabelStyle: Partial<TextStyleOptions> = {
-    fontFamily: 'Arial Rounded MT Bold',
+    fontFamily: 'Archia Medium',
     align: 'center',
+    fontSize: 15
 };
 
 export type LabelOptions = typeof defaultLabelStyle;

@@ -23,7 +23,6 @@ class APIService extends HttpService {
     set environment(value: Environment) {
       this._env = value;
     }
-  
 
     getAPIEndPoint(): string {
       if (this._env) {

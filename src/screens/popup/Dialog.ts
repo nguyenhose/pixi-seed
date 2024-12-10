@@ -98,8 +98,10 @@ export class Dialog extends Container implements ScreenContainer {
       height: 80,
       texture: "primary_button",
       text: opts.buttonText,
-      fontSize: 20,
-      fill: 0xffffff,
+      textStyle: {
+        fontSize: 20,
+        fill: 0xffffff,
+      },
       onClick: () => {
         sfx.play("click");
         opts.onClick();

@@ -1,7 +1,7 @@
 {
-  "name": "baucua",
+  "name": "pixi-seed",
   "version": "1.0.0",
-  "description": "pixi x colyseus server",
+  "description": "pixi x colyseus",
   "author": "Nguyen Ho",
   "license": "ISC",
   "scripts": {

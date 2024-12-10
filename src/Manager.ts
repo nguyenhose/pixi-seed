@@ -1,4 +1,4 @@
-import { Application, Container, Point, Ticker } from "pixi.js";
+import { Application, Container, Graphics, Point, Sprite, Ticker } from "pixi.js";
 import { PixiPlugin } from "gsap/all";
 import { gsap } from "gsap/gsap-core";
 gsap.registerPlugin(PixiPlugin);
@@ -15,6 +15,7 @@ export class Manager {
     private constructor() {}
 
     private static app: Application;
+
     private static currentScreen: ScreenContainer;
     private static currentPopup: ScreenContainer | undefined;
     private static currentToast: ScreenContainer | undefined;
@@ -54,7 +55,6 @@ export class Manager {
     public static get PlayerData() {
         return this.playerData;
     }
-
 
     public static async initialize(backgroundColor: number): Promise<void> {
         Manager.app = new Application();
@@ -107,8 +107,6 @@ export class Manager {
             }))
         }, this)
     }
-
-  
 
     public static resize() {
         const windowWidth = window.innerWidth;
@@ -220,8 +218,8 @@ export class Manager {
         }
 
     }
-    // TUTORIAL
 
+    // TUTORIAL
     public static showTutorial(title: string, content: string, buttonText: string, position: Point, onClick: any) {
         if (this.isNewUser == false) return;
         if (this.tutorialPop) {
@@ -231,8 +229,6 @@ export class Manager {
         }
         this.tutorialPop = new Tutorial(title, content, buttonText, onClick);
         this.tutorialPop.position.set(position.x - this.tutorialPop.width / 2, position.y - this.tutorialPop.height - 10);
-        // this.tutorialPop.position = position;
-        console.log("pop tutorial");
         Manager.currentScreen.interactiveChildren = false
         Manager.app.stage.addChild(this.tutorialPop);
     }
@@ -268,19 +264,26 @@ export class Manager {
         Manager.currentPopup?.focus?.();
     }
 
-    static onToast() {
-
-    }
-
-    static openMessageBox() {
-
+    public static LoadUnderneath() {
+        const background = Sprite.from("background_image");
+        background.width = Manager.width;
+        background.height = Manager.height;
+        Manager.app.stage.addChild(background);
+        // todo: check if hideHeader == true
+        const ss = new Graphics().rect(0, 0, Manager.width, 70).fill("#FFCF10");
+        Manager.app.stage.addChild(ss);
+        const shadow = new Graphics().rect(0, 68, Manager.width, 2).fill("white");
+        shadow.alpha = .7
+        Manager.app.stage.addChild(shadow);
     }
 }
 export interface ScreenContainer extends Container {
     update(deltaTime: number): void;
-    onDestroy?(): void;
     resize(): void;
+    
+    onDestroy?(): void;
     focus?(): void;
     blur?(): void;
     pause?(): void;
+
 }

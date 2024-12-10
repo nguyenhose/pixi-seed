@@ -34,8 +34,10 @@ export class Tutorial extends Container {
             texture: 'white_border_button',
             width:  100,
             offsetSlides: [0, 0, 0, 0],
-            fill: 0xffffff,
-            fontSize: 14,
+            textStyle: {
+                fill: 0xffffff,
+                fontSize: 14,
+            },
             onClick: _onClick
         })
         button.anchor.set(.5);

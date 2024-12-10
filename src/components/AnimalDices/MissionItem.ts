@@ -1,16 +1,14 @@
 import { Container, Graphics, Sprite, Text } from "pixi.js";
 import { Manager } from "../../Manager";
-import { DropShadowFilter, GrayscaleFilter } from "pixi-filters";
+import { GrayscaleFilter } from "pixi-filters";
 import { PrimaryButton } from "../shared/PrimaryButton";
-import { MissionScreen } from "../../screens/MissionScreen";
-import { NetworkService } from "../../services/NetworkService";
 import { GameScreen } from "../../screens/GameScreen";
 import { ShopScreen } from "../../screens/ShopScreen";
 
 export class MissionItem extends Container {
     _data: any;
     button: PrimaryButton;
-    constructor(index: number, data: any, _context: MissionScreen) {
+    constructor(index: number, data: any, _context: any) {
         super();
         this._data = data;
         this.addMission(index, data, _context)
@@ -19,15 +17,17 @@ export class MissionItem extends Container {
             width: 116,
             height: 55,
             texture: "white_border_button",
-            fill: 0xffffff,
-            fontSize: 13
+            textStyle: {
+                fill: 0xffffff,
+                fontSize: 13
+            }
         })
         this.button.position.set(Manager.width - 116 / 1.4, 78);
         this.addChild(this.button);
         this.updateButtonStatus();
     }
 
-    addMission(index: number = 0, data: any, _this: MissionScreen) {
+    addMission(index: number = 0, data: any, _this: any) {
         const ss = new Graphics().roundRect(20, 0, Manager.width * .9, 100).fill("#FFF0DD");
         // ss.filters = [new DropShadowFilter({})]
         this.addChild(ss);
@@ -115,11 +115,11 @@ export class MissionItem extends Container {
     }
 
     claim() {
-        NetworkService.Senders?.Game?.claimMission(this._data.challengeId);
+        // NetworkService.Senders?.Game?.claimMission(this._data.challengeId);
     }
 
     redirectChallenge() {
-        NetworkService.Senders?.Game?.redirectChallenge(this._data.challengeId);
+        // NetworkService.Senders?.Game?.redirectChallenge(this._data.challengeId);
     }
 
     updateData(data: any) {

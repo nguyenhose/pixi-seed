@@ -2,7 +2,6 @@ import { Client, Room, RoomAvailable } from "colyseus.js";
 import { GameProto } from "./networks/protocol/Protocol";
 import { BaseHandler } from "./networks/handler/BaseHandler";
 import { GameSender } from "./networks/sender/GameSender";
-import { WorldSender } from "./networks/sender/WorldSender";
 import { CLIENT_EVENTS, pixiEmitter } from "./EventEmitter";
 import { Manager } from "../Manager";
 import { LoadingScreen } from "../screens/LoadingScreen";
@@ -10,10 +9,8 @@ import { Dialog } from "../screens/popup/Dialog";
 
 export class RoomSender {
   private _game: GameSender | null;
-  private _world: WorldSender | null;
 
   constructor() {
-    this._world = null;
     this._game = null;
   }
 
@@ -24,18 +21,11 @@ export class RoomSender {
   set Game(value: GameSender | null) {
     this._game = value;
   }
-
-  get World(): WorldSender | null {
-    return this._world;
-  }
-
-  set World(value: WorldSender | null) {
-    this._world = value;
-  }
 }
 
 class NetworkServiceImpl {
   private hostname = "localhost";
+  private defaultRoomName: string = "testDefaultGame";
   private port = 2567;
   private useSSL = false;
   private mainRoom: Room | null = null;
@@ -123,7 +113,7 @@ class NetworkServiceImpl {
       });
 
       // Connect into the lobby room by default
-      this.mainRoom = await this.client.joinOrCreate("baucua", {
+      this.mainRoom = await this.client.joinOrCreate(this.defaultRoomName, {
         accessToken: this.token,
       });
 
@@ -138,42 +128,6 @@ class NetworkServiceImpl {
         switch (data.action) {
           case GameProto.GAME_ACTION.GET_DATA:
             pixiEmitter.emit(CLIENT_EVENTS.GET_DATA, data);
-            break;
-          case GameProto.GAME_ACTION.START_PLAY:
-            pixiEmitter.emit(CLIENT_EVENTS.UPDATE_RESULT, data);
-            break;
-          case GameProto.GAME_ACTION.GET_CHALLENGE:
-            pixiEmitter.emit(CLIENT_EVENTS.GET_MISSION_DATA, data);
-            break;
-          case GameProto.GAME_ACTION.SHOW_TOAST:
-            pixiEmitter.emit(CLIENT_EVENTS.TOAST, data);
-            // this.toastData.push(data);
-            break;
-          case GameProto.GAME_ACTION.GET_RANK:
-            pixiEmitter.emit(CLIENT_EVENTS.GET_LEADERBOARD, data);
-            break;
-          case GameProto.GAME_ACTION.GET_SHOP:
-            pixiEmitter.emit(CLIENT_EVENTS.GET_SHOP, data);
-            break;
-          case GameProto.GAME_ACTION.MESSAGE_BOX:
-            // pixiEmitter.emit(CLIENT_EVENTS.MESSAGE_BOX, data);
-            this.messageBoxData.push(data);
-            break;
-          case GameProto.GAME_ACTION.GET_RANK_REWARD:
-            pixiEmitter.emit(CLIENT_EVENTS.UPDATE_RANK_REWARD, data);
-            break;
-          case GameProto.GAME_ACTION.CLAIM_CHALLENGE:
-          case GameProto.GAME_ACTION.CLAIM_REDIRECT:
-            this.Senders?.Game?.sendGetChallenge();
-            break;
-          case GameProto.GAME_ACTION.CHANGE_GOLD:
-            if (data.params && data.params.currentGold != undefined) {
-                Manager.PlayerData.gold = data.params.currentGold;
-                pixiEmitter.emit(CLIENT_EVENTS.GOLD_CHANGE);
-            }
-            break;
-          case GameProto.GAME_ACTION.BUY:
-            pixiEmitter.emit(CLIENT_EVENTS.BUY_RESULT, data);
             break;
           default:
             break;

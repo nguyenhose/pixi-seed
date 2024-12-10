@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import CustomEase from 'gsap/CustomEase';
 import { randomRange } from './random';
-
 gsap.registerPlugin(CustomEase);
 
 /** Unique identifiers for custom eases */

@@ -1,39 +1,73 @@
-import { Container, Graphics, Sprite, Text } from "pixi.js";
+import { Container, Sprite, Text } from "pixi.js";
 
 import { Manager, ScreenContainer } from "../Manager";
-import { ImageP } from "../components/shared/ImageP";
-import { DropShadowFilter } from "pixi-filters";
 import { HomeScreen } from "./HomeScreen";
-import { LeaderBoardItem } from "../components/AnimalDices/LeaderBoardItem";
-import { CLIENT_EVENTS, pixiEmitter } from "../services/EventEmitter";
 import { NetworkService } from "../services/NetworkService";
 import { ScrollBox } from "@pixi/ui";
 import { sfx } from "../services/Audio";
-import { RewardScreen } from "./RewardScreen";
+import { LeaderBoardItem } from "../components/AnimalDices/LeaderBoardItem";
+import { PrimaryButton } from "../components/shared/PrimaryButton";
+import { Label } from "../components/shared/Label";
 
 export class LeaderboardScreen extends Container implements ScreenContainer {
     constructor() {
         super();
         this.addBackground();
         this.addHeader();
-        NetworkService.Senders?.Game?.sendLeaderboard();
-        pixiEmitter.on(CLIENT_EVENTS.GET_LEADERBOARD, this.onGetData, this);
+        this.onRenderMockData();
     }
 
-    onGetData({params}: any): void {
-        if (!params) return;
-        const { myRank, ranks } = params;
-        this.renderTopRank(ranks);
-        this.addPlayersList(ranks, 4);
-        this.renderMyRank(myRank); 
+    ranks = [
+        {
+            "rank": 1,
+            "displayName": "Chin",
+            "goldRank": 9610,
+            "userId": "90d48fed-718a-4481-98fb-59de3f6e7578"
+        },
+        {
+            "rank": 2,
+            "displayName": "Nguyen",
+            "goldRank": 390,
+            "userId": "271d0f1d-baa5-48a3-bb4d-3f0881306197"
+        },
+        {
+            "rank": 3,
+            "displayName": "Ní",
+            "goldRank": 0,
+            "userId": "e8fa5f4c-15fc-4c91-b692-0c4e283ab47f"
+        },
+        {
+            "rank": 4,
+            "displayName": "Ní 2",
+            "goldRank": 0,
+            "userId": "e8fa5f4c-15fc-4c91-b692-0c4e283ab47f"
+        },
+        {
+            "rank": 5,
+            "displayName": "Ní 3",
+            "goldRank": 0,
+            "userId": "e8fa5f4c-15fc-4c91-b692-0c4e283ab47f"
+        }
+    ]
+
+    myRank = {
+        "rank": 2,
+        "displayName": "Nguyen",
+        "goldRank": 390,
+        "userId": "271d0f1d-baa5-48a3-bb4d-3f0881306197"
+    }
+
+    onRenderMockData(): void {
+        this.renderTopRank(this.ranks);
+        this.addPlayersList(this.ranks, 4);
+        this.renderMyRank(this.myRank); 
     }
 
     onDestroy(): void {
-        pixiEmitter.removeListener(CLIENT_EVENTS.GET_LEADERBOARD, this.onGetData, this)
     }
 
     update(deltaTime: number): void {
-        NetworkService.checkMessageBox();
+        // NetworkService.checkMessageBox();
     }
 
     resize(): void {
@@ -45,39 +79,27 @@ export class LeaderboardScreen extends Container implements ScreenContainer {
             fontFamily: 'Archia Medium'
         }});
         title.anchor.set(.5);
-     
         title.position.set(Manager.width / 2, 35);
         this.addChild(title);
-        if (Manager.gameHasEnd == false) {
-            const backButton = Sprite.from("back_button");
-            backButton.width = 30;
-            backButton.height = 30;
-            backButton.position.set(10, 18);
-            backButton.eventMode = 'static';
-            backButton.on('pointerup', (e) => {
-                sfx.play("click");
-                Manager.changeScreen(new HomeScreen());
-            })
-            this.addChild(backButton);
-        }
 
-        const toRewardScreenBtn = Sprite.from("giftIcon");
-        toRewardScreenBtn.width = 50;
-        toRewardScreenBtn.height = 50;
-        toRewardScreenBtn.position.set(Manager.width - 55, 75);
-        toRewardScreenBtn.eventMode = 'static';
-        toRewardScreenBtn.on('pointerup', (e) => {
-            sfx.play("click");
-            Manager.changeScreen(new RewardScreen());
-        })
-        this.addChild(toRewardScreenBtn);
+        if (Manager.gameHasEnd == false) {
+            // add back button
+            const backBtn = new PrimaryButton({
+                texture: "back_button",
+                width: 20,
+                onClick: () => {Manager.changeScreen(new HomeScreen());}
+            })
+            backBtn.tint = 0x000000;
+            backBtn.position.set(30, 30);
+            this.addChild(backBtn);
+        }
     }
     
     addBackground() {
-        const cup = Sprite.from("leader_cup");
+        const cup = Sprite.from("trophy_icon");
         cup.anchor.set(.5);
         cup.position.set(Manager.width / 2, 140)
-        cup.scale.set(.5);
+        cup.scale.set(.25);
         this.addChild(cup);
     }
 
@@ -103,20 +125,34 @@ export class LeaderboardScreen extends Container implements ScreenContainer {
     }
 
     renderTopRank(ranks: any) {
-        
             this.addTopRank(ranks[1], {x: -120, y: 10} );
             this.addTopRank(ranks[0], {x: 0, y: -20});
             this.addTopRank(ranks[2], {x: 120, y: 10});
     }
 
-
+    colorPalette = ["#432E54", "#AE445A", "#E8BCB9"];
     addTopRank(data: any, offset: any) {
         if (!data) return;
-        const sprite = Sprite.from(`top_${data.rank}`);
-        sprite.width = 100; sprite.height = 100;
+        // const sprite = Sprite.from(`top_${data.rank}`);
+        const sprite = Sprite.from(`round_avt`);
+        sprite.width = 80; sprite.height = 80;
         sprite.anchor.set(.5);
         sprite.position.set(Manager.width / 2 + offset.x, Manager.height / 2 - 200 + offset.y);
+        sprite.tint = this.colorPalette[data.rank - 1];
         this.addChild(sprite);
+
+        // render rank
+        const rank = new Label(data.rank, {
+            fontSize: 30,
+            fill: 'white',
+            stroke: {
+                color: 'black',
+                width: 5,
+                join: 'bevel'
+            }
+        });
+        rank.position = sprite.position;
+        this.addChild(rank);
 
         const name = new Text({ text: data.displayName.toUpperCase(), style: {fontSize: 15, fontFamily: "Archia Medium"} });
         name.anchor.set(.5);

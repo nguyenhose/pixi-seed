@@ -3,7 +3,10 @@ import { API } from "../services/APIService";
 import { DBService } from "../services/DBService";
 import { CLIENT_EVENTS, pixiEmitter } from "../services/EventEmitter";
 import { NetworkService } from "../services/NetworkService";
-import { ENV_DEV } from "../env/Environment";
+
+/**
+    Login Flow
+*/
 class LoginCredentialImpl {
   async login(credentialToken: string, env: string | null) {
     try {
