@@ -2,10 +2,8 @@ import { Container, Sprite, Text } from "pixi.js";
 
 import { Manager, ScreenContainer } from "../Manager";
 import { HomeScreen } from "./HomeScreen";
-import { NetworkService } from "../services/NetworkService";
 import { ScrollBox } from "@pixi/ui";
-import { sfx } from "../services/Audio";
-import { LeaderBoardItem } from "../components/AnimalDices/LeaderBoardItem";
+import { LeaderBoardItem } from "../components/item/LeaderBoardItem";
 import { PrimaryButton } from "../components/shared/PrimaryButton";
 import { Label } from "../components/shared/Label";
 
@@ -117,7 +115,6 @@ export class LeaderboardScreen extends Container implements ScreenContainer {
             height: Manager.height - startY - 70,
             elementsMargin: 10,
             bottomPadding: 10,
-            // background: 'red',
             items
         })
         list.position.set(0, startY);
@@ -154,15 +151,15 @@ export class LeaderboardScreen extends Container implements ScreenContainer {
         rank.position = sprite.position;
         this.addChild(rank);
 
-        const name = new Text({ text: data.displayName.toUpperCase(), style: {fontSize: 15, fontFamily: "Archia Medium"} });
+        const name = new Label(data.displayName.toUpperCase(), {fontSize: 15});
         name.anchor.set(.5);
         name.position.set(Manager.width / 2 + offset.x, Manager.height / 2 - 145 + offset.y);
         this.addChild(name);
 
-        const coin = new Text({ text: `+${data.goldRank.toLocaleString()}`, style: {fontSize: 13, fontFamily: "Archia Medium"} });
+        const coin = new Label(`+${data.goldRank.toLocaleString()}`, {fontSize: 13});
         coin.position.set(
-            Manager.width / 2 + offset.x - (coin.width / 2), 
-            Manager.height / 2 - 125 + offset.y);
+            Manager.width / 2 + offset.x, 
+            Manager.height / 2 - 118 + offset.y);
         this.addChild(coin);
 
         const coinIcon = Sprite.from("currency");
@@ -175,7 +172,6 @@ export class LeaderboardScreen extends Container implements ScreenContainer {
         const item = new LeaderBoardItem(data.rank, data, this);
         this.addChild(item);
         item.background.alpha = 1;
-        // item.filters = [new DropShadowFilter()];
         item.position.set(0, Manager.height - item.height - 2);
     }
 }

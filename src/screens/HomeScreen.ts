@@ -1,4 +1,4 @@
-import { Container, Sprite } from "pixi.js";
+import { BlurFilter, Container, Sprite } from "pixi.js";
 import { Manager, ScreenContainer } from "../Manager";
 import { PrimaryButton } from "../components/shared/PrimaryButton";
 import { Label } from "../components/shared/Label";
@@ -27,6 +27,14 @@ export class HomeScreen extends Container implements ScreenContainer {
     resize(): void {
     }
 
+    blur() {
+        this.filters = [new BlurFilter()]
+    }
+
+    focus() {
+        this.filters = []
+    }
+
     renderHeader() {
          // add user name
          const userName = new Label("Lovely Guest");
@@ -50,7 +58,8 @@ export class HomeScreen extends Container implements ScreenContainer {
          // add setting section
          const settingBtn = new PrimaryButton({
             texture: "setting_icon",
-            width: 30
+            width: 30,
+            onClick: () => {this.onOpenSetting();}
          });
          settingBtn.position.set(Manager.width - 25, 25)
          this.addChild(settingBtn);
@@ -109,6 +118,10 @@ export class HomeScreen extends Container implements ScreenContainer {
 
     onOpenLeaderboardScreen() {
         Manager.changeScreen(new LeaderboardScreen());
+    }
+
+    onOpenSetting() {
+        Manager.toggleSetting(true);
     }
 }
 

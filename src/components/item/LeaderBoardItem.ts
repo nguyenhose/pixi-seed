@@ -18,7 +18,7 @@ export class LeaderBoardItem extends Container {
         stt.position.set(startX + 20, startY + 35);
         this.addChild(stt);
 
-        const avt = Sprite.from("top_100");
+        const avt = Sprite.from("round_avt");
         avt.width = 40; avt.height = 40;
         avt.anchor.set(.5);
         avt.position.set(startX + 60, startY + 35);

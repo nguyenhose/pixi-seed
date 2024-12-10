@@ -39,8 +39,25 @@ export const manifest = {
                     alias: 'round_avt',
                     src: './common/circle.png'
                 },
+                {
+                    alias: 'toggleOff',
+                    src: './common/toggleOff.png'
+                },
+                {
+                    alias: 'toggleOn',
+                    src: './common/toggleOn.png'
+                },
+                {
+                    alias: "close_modal",
+                    src: "./common/close_modal.png"
+                },
                 // font loading
                 { alias: 'Archia Medium', src: './fonts/Archia-Medium.otf' },
+                // sound
+                {
+                    alias: "click",
+                    src: "./sound/SFX_UI_Button_Click_Select_1.wav"
+                }
             ]
         }
     ]
