@@ -54,15 +54,22 @@ export class RecapFour extends Container implements RecapItem {
         this.pizza.alpha = 0;
         this.addChild(this.pizza);
 
+
+
         this.animate();
     }
     
     animate(): void {
         const tl = gsap.timeline();
-        tl.to(this.pizza, {alpha: 1, duration: 1, ease: "sine.in"});
-        tl.to(this.milkTea, {alpha: 1, duration: 1, ease: "sine.in"});
-        tl.to(this.xienban, {alpha: 1, duration: 1, ease: "sine.in"});
-        tl.to(this.food, {alpha: 1, duration: 1, ease: "sine.in"});
+        tl.to(this.pizza, {alpha: 1, duration: .7, ease: "sine.in"});
+        tl.to(this.milkTea, {alpha: 1, duration: .7, ease: "sine.in"});
+        tl.to(this.xienban, {alpha: 1, duration: .7, ease: "sine.in"});
+        tl.to(this.food, {alpha: 1, duration: .7, ease: "sine.in"});
+
+        this.renderBling(Manager.width / 6 + 10, Manager.height - Manager.width / 5 * 4.5 + 20, tl)
+        this.renderBling(Manager.width / 6 + 20, Manager.height - Manager.width / 5 * 2.5, tl)
+        this.renderBling(Manager.width - 20, Manager.height - Manager.width / 5 * 2, tl)
+      
 
     }
 
@@ -75,5 +82,13 @@ export class RecapFour extends Container implements RecapItem {
         _brand.anchor.set(0, 0);
         _brand.position.set(20, _y);
         this.addChild(_brand);
+    }
+
+    renderBling(x: number, y: number, _tl: any) {
+        const blingbling = new CustomImage("bling", Manager.width / 20);
+        blingbling.position.set(x, y);
+        blingbling.alpha = 0;
+        this.addChild(blingbling);
+        _tl.to(blingbling, { alpha: 1, yoyo: true, repeat: -1, duration: 1.5});
     }
 }
