@@ -1,4 +1,4 @@
-import { TextStyleOptions, Text, TextStyle, Sprite, SpriteOptions, Texture } from 'pixi.js';
+import { TextStyleOptions, Text, TextStyle, Sprite, SpriteOptions, Texture, TextureUvs, WRAP_MODES } from 'pixi.js';
 
 
 
@@ -9,6 +9,8 @@ import { TextStyleOptions, Text, TextStyle, Sprite, SpriteOptions, Texture } fro
  */
 export class CustomImage extends Sprite {
     constructor(texture: string, size: number) {
+        const _texture = Texture.from(texture);
+
         super({ texture: Texture.from(texture) });
         const ratio = this.width / this.height;
         

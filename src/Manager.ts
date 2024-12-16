@@ -3,7 +3,7 @@ import { PixiPlugin } from "gsap/all";
 import { gsap } from "gsap/gsap-core";
 gsap.registerPlugin(PixiPlugin);
 
-import { AudioConfig, GameConfig, PlayerData } from "./common/GameState";
+import { AudioConfig, GameConfig, PlayerData, RecapData } from "./common/GameState";
 import { QuickSetting } from "./screens/popup/QuickSetting";
 import { clamp } from "./components/utils/timer";
 import { Tutorial } from "./screens/popup/Tutorial";
@@ -23,7 +23,7 @@ export class Manager {
     private static tutorialPop: Container | undefined;
 
     private static gameConfig: GameConfig;
-    private static playerData: PlayerData;
+    private static recapData: RecapData;
     public static audioSetting: AudioConfig;
 
     public static gameHasEnd: boolean = false;
@@ -48,25 +48,27 @@ export class Manager {
         this.gameConfig = _gc;
     }
 
-    public static set PlayerData(_pd: PlayerData) {
-        this.playerData = _pd;
+    public static set RecapData(_pd: RecapData) {
+        this.recapData = _pd;
     }
 
-    public static get PlayerData() {
-        return this.playerData;
+    public static get RecapData() {
+        return this.recapData;
     }
 
-    public static async initialize(backgroundColor: number): Promise<void> {
+    public static async initialize(backgroundColor: number | string): Promise<void> {
         Manager.app = new Application();
         // mock data
-        Manager.PlayerData = {
-            displayName: "",
-            gold: 0,
-            leaderboardId: "",
-            luckySpinTurn: 0,
-            remainingGiftTime: 0,
-            getDataTime: new Date(),
-            userId: ""
+        Manager.recapData = {
+            userName: "Thảo",
+            startFrom: "4.7.2017",
+            year: 0,
+            month: 0,
+            day: 0,
+            redeemPoint: 10,
+            issuedPoint: 100,
+            voucher: 2,
+            topThree: ["Chang", "Dairy Queen", "TPC"]
         }
         // register gsap
         PixiPlugin.registerPIXI(Manager.app);

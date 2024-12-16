@@ -1,3 +1,5 @@
+import { Assets } from "pixi.js";
+
 export const manifest = {
     bundles: [
         {
@@ -58,6 +60,78 @@ export const manifest = {
                     alias: "click",
                     src: "./sound/SFX_UI_Button_Click_Select_1.wav"
                 }
+            ]
+        },
+        {
+            name: "recap_1",
+            assets: [
+                {
+                    alias: "BG",
+                    src: "./recap/screen_1/BG.png"
+                },
+                {
+                    alias: "LEMUCK",
+                    src: "./recap/screen_1/LEMUCK.png"
+                },
+                {
+                    alias: "FIREWORK_RIGHT",
+                    src: "./recap/screen_1/FIREWORK_RIGHT.png"
+                },
+                {
+                    alias: "FIREWORK_LEFT",
+                    src: "./recap/screen_1/FIREWORK_LEFT.png"
+                },
+                {
+                    alias: "GIFT",
+                    src: "./recap/screen_1/GIFT.png"
+                },
+                {
+                    alias: "2024",
+                    src: "./recap/screen_1/2024.png"
+                },
+                {
+                    alias: "explore_btn",
+                    src: "./recap/screen_1/EXPLORE_BTN.png"
+                }, 
+             
+
+            ]
+        },
+        {
+            name: "recap_2",
+            assets: [
+                {
+                    alias: "light",
+                    src: "./recap/screen_2/LIGHT.png"
+                },
+                {
+                    alias: "BG_2",
+                    src: "./recap/screen_2/BG_2.png"
+                },
+                {
+                    alias: "lemuck_2",
+                    src: "./recap/screen_2/LEMUCK_2.png"
+                },
+                {
+                    alias: "pink_plannet",
+                    src: "./recap/screen_2/PINK.png"
+                },
+                {
+                    alias: "spaceship",
+                    src: "./recap/screen_2/SPACE.png"
+                },
+                {
+                    alias: "star",
+                    src: "./recap/screen_2/STAR.png"
+                },
+                {
+                    alias: "gate",
+                    src: "./recap/screen_2/GATE.png"
+                },
+                {
+                    alias: "founded",
+                    src: "./recap/screen_2/FOUNDED.png"
+                },
             ]
         }
     ]

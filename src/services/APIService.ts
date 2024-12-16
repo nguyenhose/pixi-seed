@@ -125,6 +125,30 @@ class APIService extends HttpService {
       }
     }
 
+    async getRecapData(userId: string): Promise<null> {
+        const url = `${this.getAPIEndPoint()}/wrapup/2024/${userId}`;
+        console.log(url);
+        
+        try {
+            let rs = await this.__httpGet(url, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            let result = this.__parseResponse(rs);
+            if (result) {
+              if (result.status.success) {
+                return result.data;
+              }
+              console.log(result.status.message);
+            }
+            return null;
+          } catch (ex: any) {
+            this.__errorHandler(ex);
+            return null;
+          }
+    }
+
     async checkToken(token: string): Promise<AccessTokenData | null> {
       const url = `${this.getAPIEndPoint()}/auth/token`;
       try {

@@ -1,27 +1,101 @@
-import { BlurFilter, Container, Sprite } from "pixi.js";
+import { BlurFilter, Container, FederatedEvent, FederatedPointerEvent, Sprite } from "pixi.js";
 import { Manager, ScreenContainer } from "../Manager";
 import { PrimaryButton } from "../components/shared/PrimaryButton";
-import { Label } from "../components/shared/Label";
-import { CustomImage } from "../components/shared/CustomImage";
-import { GameScreen } from "./GameScreen";
-import { LeaderboardScreen } from "./LeaderboardScreen";
+import { RecapItem } from "../components/item/RecapItem";
+import { spectral10 } from "../components/utils/theme";
+import { gsap } from "gsap/gsap-core";
+import { RecapOne } from "../components/item/RecapOne";
+import { RecapTwo } from "../components/item/RecapTwo";
 
 
 /** screen show up after loading */
 export class HomeScreen extends Container implements ScreenContainer {
+    private recapContainer: Container;
+    private recapState: RecapState = RecapState.IDLE;
+    private recapItemIndex = 0;
+    private recapPosition = 0;
+    
+    // Dragging variables
+    isDragging = false;
+    dragStartX = 0;
+    startCarouselX = 0;
+
+    items: RecapItem[] = []
+
     constructor() {
         super();
-        // add header bar: name, coin, settings
-        this.renderHeader();
+        this.recapContainer = new Container();
+        // add items
+        for(let i = 0; i < 8; i++) {
+            switch (i) {
+                case 1:
+                    this.items.push(new RecapTwo());
+                    break;
+                default:
+                    this.items.push(new RecapOne());
+            }
+            this.items[i].position.set(i * Manager.width, 0);
+            this.recapContainer.addChild(this.items[i]);
+        
+        }
 
-        // add game logo
-        this.renderGameLogo()
+        // navigation
+        const nextButton = new PrimaryButton({
+            text: "Next",
+            onClick: () => {
+                this.recapItemIndex ++;
+                this.nextSlide();
+            } 
+        })
+        nextButton.position.set(Manager.width / 2, Manager.height - 200);
+        this.addChild(this.recapContainer);
+        // this.addChild(nextButton);
 
-        // add buttons group: play button, mission button, leaderboard buttons
-        this.renderButtonGroup();
 
+
+        // Drag events
+        this.recapContainer.interactive = true;
+        this.recapContainer.on("pointerdown", (e) => {this.onDragStart(e)});
+        this.recapContainer.on("pointermove", (e) => {this.onDragMove(e)});
+        this.recapContainer.on("pointerup", (e) => {this.onDragEnd(e)});
+        this.recapContainer.on("pointerupoutside", (e) => {this.onDragEnd(e)});
     }
+
+    onDragStart(event: FederatedPointerEvent) {
+        this.isDragging = true;
+        this.dragStartX = event.globalX;
+        this.startCarouselX = this.recapContainer.x;
+    }
+
+    onDragMove(event: FederatedPointerEvent) {
+        if (this.isDragging) {
+            const dragDelta = event.globalX - this.dragStartX;
+            this.recapContainer.x = this.startCarouselX + dragDelta;
+        }
+    }
+
+
+    onDragEnd(event: FederatedPointerEvent) {
+        if (this.isDragging) {
+            this.isDragging = false;
+            const dragDelta = event.globalX - this.dragStartX;
+            console.log(dragDelta);
+            
+            // Check if drag distance exceeds 1/3 of item width
+            if (dragDelta > Manager.width / 3 && this.recapItemIndex > 0) {
+            this.recapItemIndex--;
+            } else if (dragDelta < -Manager.width / 3 && this.recapItemIndex < this.items.length) {
+            this.recapItemIndex++;
+            }
+  
+          // Animate to new position
+          this.nextSlide();
+        }
+    }
+
+
     update(deltaTime: number): void {
+     
     }
 
     resize(): void {
@@ -35,93 +109,23 @@ export class HomeScreen extends Container implements ScreenContainer {
         this.filters = []
     }
 
-    renderHeader() {
-         // add user name
-         const userName = new Label("Lovely Guest");
-         userName.position.set(10, 25);
-         userName.anchor.set(0);
-         this.addChild(userName);
- 
-         // add coin section
-         const coinSection = new Container();
-         const coinIcon = Sprite.from("coin_icon");
-         coinIcon.width = 30; coinIcon.height = 30;
-         
-         const coinValue = new Label("100"); coinValue.anchor.set(0);
-         coinValue.position.set(35, 5);
-
-         coinSection.addChild(coinIcon);
-         coinSection.addChild(coinValue);
-         coinSection.position.set(Manager.width - 150, 20)
-         this.addChild(coinSection);
-
-         // add setting section
-         const settingBtn = new PrimaryButton({
-            texture: "setting_icon",
-            width: 30,
-            onClick: () => {this.onOpenSetting();}
-         });
-         settingBtn.position.set(Manager.width - 25, 25)
-         this.addChild(settingBtn);
+    nextSlide() {
+        if (this.recapState == RecapState.IDLE && this.recapItemIndex < 7) {
+            this.recapState = RecapState.MOVING;
+            this.recapPosition = this.recapItemIndex * Manager.width * -1;
+            gsap.to(this.recapContainer.position, { x: this.recapPosition, ease: "sine", onComplete: () => {
+                this.recapState = RecapState.IDLE;
+                if (this.items[this.recapItemIndex]) {
+                    this.items[this.recapItemIndex].animate();
+                }
+            }});
+        }
     }
+}
 
-    renderGameLogo() {
-        // add game name
-        const gameName = new CustomImage("game_title", Manager.width * .85);
-        gameName.anchor.set(.5);
-        gameName.position.set(Manager.width / 2, Manager.height / 3)
+export enum RecapState {
+    IDLE,
+    MOVING,
 
-        this.addChild(gameName);
-    }
-
-    renderButtonGroup() {
-        const buttonGroup = new Container();
-
-        const playBtn = new PrimaryButton({
-            width: 200,
-            texture: 'yellow_button',
-            text: 'Chơi Ngay',
-            textStyle: {
-                fontSize: 30,
-                fill: 0x000000,
-                fontWeight: 'bold',
-                stroke: { color: '#ffffff', width: 5, join: 'round' },
-            },
-            onClick: () => {this.onStartPlay()}
-        });
-        
-        buttonGroup.addChild(playBtn);
-        buttonGroup.position.set(Manager.width / 2, Manager.height / 1.5);
-        this.addChild(buttonGroup);
-
-        const leaderboardBtn = new PrimaryButton({
-            texture: 'yellow_button',
-            width: 150,
-            text: "Xếp Hạng",
-            textStyle: {
-                fontSize: 20,
-                fill: 0x000000,
-            },
-            icon: 'trophy_icon',
-            iconSize: 25,
-            iconColor: 'black',
-            onClick: () => {this.onOpenLeaderboardScreen()}
-        })
-        leaderboardBtn.position.set(100, Manager.height - 100);
-        this.addChild(leaderboardBtn);
-    }
-
-    // events
-    onStartPlay() {
-        Manager.changeScreen(new GameScreen());
-    }
-
-    onOpenLeaderboardScreen() {
-        Manager.changeScreen(new LeaderboardScreen());
-    }
-
-    onOpenSetting() {
-        Manager.toggleSetting(true);
-    }
 }
 

@@ -58,11 +58,40 @@ class LoginCredentialImpl {
     return false;
   }
 
+  async getRecapData(id: string) {
+    try {
+        let rs = await API.getRecapData(id);
+        console.log("data: ", rs);
+        pixiEmitter.emit(CLIENT_EVENTS.GET_DATA, rs);
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
   __parseTokenFromURL(): string | null{
     let search = window.location.search;
     if (search.length > 0) {
       let urlParams = new URLSearchParams(search);
       return urlParams.get("token");
+    }
+
+    let url = window.location.href || window.location.toString();
+    let index = url.lastIndexOf("/");
+    if (index !== -1) {
+      let uid = url.substring(index + 1);
+      if (uid && !uid.includes(".")) {
+        return uid.trim();
+      }
+    }
+
+    return null;
+  }
+
+  __parseUserIdFromURL(): string | null{
+    let search = window.location.search;
+    if (search.length > 0) {
+      let urlParams = new URLSearchParams(search);
+      return urlParams.get("userid");
     }
 
     let url = window.location.href || window.location.toString();
