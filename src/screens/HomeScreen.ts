@@ -8,6 +8,7 @@ import { RecapOne } from "../components/item/RecapOne";
 import { RecapTwo } from "../components/item/RecapTwo";
 import { RecapThree } from "../components/item/RecapThree";
 import { RecapFour } from "../components/item/RecapFour";
+import { RecapFive } from "../components/item/RecapFive";
 
 
 /** screen show up after loading */
@@ -37,11 +38,14 @@ export class HomeScreen extends Container implements ScreenContainer {
                     this.items.push(new RecapThree());
                     break;
                 case 3:
-                    this.items.push(new RecapThree());
+                    this.items.push(new RecapFour());
+                    break;
+                case 4:
+                    this.items.push(new RecapFive());
                     break;
                 default:
                     // this.items.push(new RecapThree());
-                    this.items.push(new RecapFour());
+                    this.items.push(new RecapOne());
             }
             this.items[i].position.set(i * Manager.width, 0);
             this.recapContainer.addChild(this.items[i]);
@@ -92,9 +96,9 @@ export class HomeScreen extends Container implements ScreenContainer {
             
             // Check if drag distance exceeds 1/3 of item width
             if (dragDelta > Manager.width / 3 && this.recapItemIndex > 0) {
-            this.recapItemIndex--;
+                this.recapItemIndex--;
             } else if (dragDelta < -Manager.width / 3 && this.recapItemIndex < this.items.length) {
-            this.recapItemIndex++;
+                this.recapItemIndex++;
             }
   
           // Animate to new position

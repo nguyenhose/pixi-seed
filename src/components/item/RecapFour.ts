@@ -56,7 +56,6 @@ export class RecapFour extends Container implements RecapItem {
 
 
 
-        this.animate();
     }
     
     animate(): void {
@@ -89,6 +88,6 @@ export class RecapFour extends Container implements RecapItem {
         blingbling.position.set(x, y);
         blingbling.alpha = 0;
         this.addChild(blingbling);
-        _tl.to(blingbling, { alpha: 1, yoyo: true, repeat: -1, duration: 1.5});
+        _tl.to(blingbling, { alpha: 1, yoyo: true, repeat: -1, duration: 1.5, ease: "sine"});
     }
 }

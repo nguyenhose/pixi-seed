@@ -215,6 +215,48 @@ export const manifest = {
                     src: "./recap/screen_4/omg.png"
                 },
             ]
-            }
+        },
+        {
+            name: "recap_5",
+            assets: [
+                {
+                    alias: "bg_5",
+                    src: "./recap/screen_5/BG_5.png"
+                },
+                {
+                    alias: "share_now",
+                    src: "./recap/screen_5/share_now.png"
+                },
+                {
+                    alias: "plannet",
+                    src: "./recap/screen_5/plannet.png"
+                },
+                {
+                    alias: "text_journey",
+                    src: "./recap/screen_5/text_jorney.png"
+                },
+                {
+                    alias: "frame",
+                    src: "./recap/screen_5/frame.png"
+                },
+                {
+                    alias: "arrow",
+                    src: "./recap/screen_5/arrow.png"
+                },
+                {
+                    alias: "star_dust",
+                    src: "./recap/screen_5/start_dust.png"
+                },
+                {
+                    alias: "share",
+                    src: "./recap/screen_5/share.png"
+                },
+                {
+                    alias: "sun",
+                    src: "./recap/screen_5/sun_detail.png"
+                },
+                
+            ]
+        }
     ]
 }
