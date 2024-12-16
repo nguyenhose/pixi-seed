@@ -23,12 +23,13 @@ export class RecapFour extends Container implements RecapItem {
         const text = new CustomImage("text_omg", Manager.width * 0.7);
         text.position.set(20, Manager.height * .05);
         this.addChild(text);
-
-        for(let i = 0; i < data.topThree.length; i++) {
-            const initY = text.position.y + text.height + 30;
-
-            this.renderBrand(data.topThree[i], initY + i * 45);
+        if (data.topThree) {
+            for(let i = 0; i < data.topThree.length; i++) {
+                const initY = text.position.y + text.height + 30;
+                this.renderBrand(data.topThree[i], initY + i * 45);
+            }
         }
+      
         
         this.food = new CustomImage("food", Manager.width / 5.5);
         this.food.anchor.set(0, 1);
