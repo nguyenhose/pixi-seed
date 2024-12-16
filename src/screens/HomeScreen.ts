@@ -7,6 +7,7 @@ import { gsap } from "gsap/gsap-core";
 import { RecapOne } from "../components/item/RecapOne";
 import { RecapTwo } from "../components/item/RecapTwo";
 import { RecapThree } from "../components/item/RecapThree";
+import { RecapFour } from "../components/item/RecapFour";
 
 
 /** screen show up after loading */
@@ -35,9 +36,12 @@ export class HomeScreen extends Container implements ScreenContainer {
                 case 2:
                     this.items.push(new RecapThree());
                     break;
+                case 3:
+                    this.items.push(new RecapThree());
+                    break;
                 default:
                     // this.items.push(new RecapThree());
-                    this.items.push(new RecapOne());
+                    this.items.push(new RecapFour());
             }
             this.items[i].position.set(i * Manager.width, 0);
             this.recapContainer.addChild(this.items[i]);

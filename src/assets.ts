@@ -167,6 +167,10 @@ export const manifest = {
             name: "recap_4",
             assets: [
                 {
+                    alias: "bg_4",
+                    src: "./recap/screen_4/BG_4.png"
+                },
+                {
                     alias: "food",
                     src: "./recap/screen_4/food.png"
                 },
@@ -205,6 +209,10 @@ export const manifest = {
                 {
                     alias: "milk_tea",
                     src: "./recap/screen_4/tea.png"
+                },
+                {
+                    alias: "text_omg",
+                    src: "./recap/screen_4/omg.png"
                 },
             ]
             }
