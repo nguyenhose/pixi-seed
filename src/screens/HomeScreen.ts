@@ -6,6 +6,7 @@ import { spectral10 } from "../components/utils/theme";
 import { gsap } from "gsap/gsap-core";
 import { RecapOne } from "../components/item/RecapOne";
 import { RecapTwo } from "../components/item/RecapTwo";
+import { RecapThree } from "../components/item/RecapThree";
 
 
 /** screen show up after loading */
@@ -31,7 +32,11 @@ export class HomeScreen extends Container implements ScreenContainer {
                 case 1:
                     this.items.push(new RecapTwo());
                     break;
+                case 2:
+                    this.items.push(new RecapThree());
+                    break;
                 default:
+                    // this.items.push(new RecapThree());
                     this.items.push(new RecapOne());
             }
             this.items[i].position.set(i * Manager.width, 0);

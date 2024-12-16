@@ -133,6 +133,80 @@ export const manifest = {
                     src: "./recap/screen_2/FOUNDED.png"
                 },
             ]
-        }
+        },
+        {
+            name: "recap_3",
+            assets: [
+                {
+                    alias: "bg_3",
+                    src: "./recap/screen_3/BG_3.png"
+                },
+                {
+                    alias: "text_3",
+                    src: "./recap/screen_3/Text_3.png"
+                },
+                {
+                    alias: "v1",
+                    src: "./recap/screen_3/VOUCHER_ND.png"
+                },
+                {
+                    alias: "v2",
+                    src: "./recap/screen_3/VOUCHER_SF.png"
+                },
+                {
+                    alias: "v3",
+                    src: "./recap/screen_3/VOUCHER_W.png"
+                },
+                {
+                    alias: "v4",
+                    src: "./recap/screen_3/VOUCHER_PZ.png"
+                },
+            ]
+        },
+        {
+            name: "recap_4",
+            assets: [
+                {
+                    alias: "food",
+                    src: "./recap/screen_4/food.png"
+                },
+                {
+                    alias: "bling",
+                    src: "./recap/screen_4/bling.png"
+                },
+                {
+                    alias: "stair",
+                    src: "./recap/screen_4/stair.png"
+                },
+                {
+                    alias: "xien",
+                    src: "./recap/screen_4/xien.png"
+                },
+                {
+                    alias: "orange_p",
+                    src: "./recap/screen_4/orange_p.png"
+                },
+                {
+                    alias: "blue_p",
+                    src: "./recap/screen_4/blue_p.png"
+                },
+                {
+                    alias: "lemuck_4",
+                    src: "./recap/screen_4/LEMUCK.png"
+                },
+                {
+                    alias: "pizza",
+                    src: "./recap/screen_4/PIZZA.png"
+                },
+                {
+                    alias: "shape",
+                    src: "./recap/screen_4/SHAPE.png"
+                },
+                {
+                    alias: "milk_tea",
+                    src: "./recap/screen_4/tea.png"
+                },
+            ]
+            }
     ]
 }
