@@ -11,6 +11,7 @@ export class RecapFour extends Container implements RecapItem {
     xienban: CustomImage;
     milkTea: CustomImage;
     pizza: CustomImage;
+    animated: boolean = false;
 
     constructor() {
         super();
@@ -60,15 +61,19 @@ export class RecapFour extends Container implements RecapItem {
     }
     
     animate(): void {
-        const tl = gsap.timeline();
-        tl.to(this.pizza, {alpha: 1, duration: .7, ease: "sine.in"});
-        tl.to(this.milkTea, {alpha: 1, duration: .7, ease: "sine.in"});
-        tl.to(this.xienban, {alpha: 1, duration: .7, ease: "sine.in"});
-        tl.to(this.food, {alpha: 1, duration: .7, ease: "sine.in"});
-
-        this.renderBling(Manager.width / 6 + 10, Manager.height - Manager.width / 5 * 4.5 + 20, tl)
-        this.renderBling(Manager.width / 6 + 20, Manager.height - Manager.width / 5 * 2.5, tl)
-        this.renderBling(Manager.width - 20, Manager.height - Manager.width / 5 * 2, tl)
+        if (this.animated == false) {
+            this.animated = true;
+            const tl = gsap.timeline();
+            tl.to(this.pizza, {alpha: 1, duration: .7, ease: "sine.in"});
+            tl.to(this.milkTea, {alpha: 1, duration: .7, ease: "sine.in"});
+            tl.to(this.xienban, {alpha: 1, duration: .7, ease: "sine.in"});
+            tl.to(this.food, {alpha: 1, duration: .7, ease: "sine.in"});
+    
+            this.renderBling(Manager.width / 6 + 10, Manager.height - Manager.width / 5 * 4.5 + 20, tl)
+            this.renderBling(Manager.width / 6 + 20, Manager.height - Manager.width / 5 * 2.5, tl)
+            this.renderBling(Manager.width - 20, Manager.height - Manager.width / 5 * 2, tl)
+        }
+    
       
 
     }
@@ -77,7 +82,7 @@ export class RecapFour extends Container implements RecapItem {
         const _brand = new Label(`${brand}`, {
             fontSize: 30,
             fill: 'white',
-            fontWeight: 'bold'
+            fontFamily: 'Archia Bold'
         })
         _brand.anchor.set(0, 0);
         _brand.position.set(20, _y);

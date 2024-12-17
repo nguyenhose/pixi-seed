@@ -1,152 +1,76 @@
-import { Container, Graphics, Sprite } from "pixi.js";
-import { Label } from "../shared/Label";
-import { Manager } from "../../Manager";
+import { Container } from "pixi.js";
+import { RecapItem } from "./RecapItem";
 import { CustomImage } from "../shared/CustomImage";
+import { Manager } from "../../Manager";
+import { Label } from "../shared/Label";
 import { gsap } from "gsap/gsap-core";
 
-export class RecapTwo extends Container {
+export class RecapTwo extends Container implements RecapItem {
     lemuck: CustomImage;
-    gate: CustomImage;
-    light: CustomImage;
-    spaceship: CustomImage;
-    founded: CustomImage;
-    startX: number = 0;
+    coins: CustomImage;
+    animated: boolean = false
     constructor() {
         super();
         const data = Manager.RecapData;
-        const bg = new CustomImage("BG_2", Manager.width);
+        const bg = new CustomImage("background_6", Manager.width);
+        bg.anchor.set(0, 1)
+        bg.position.set(0, Manager.height)
         this.addChild(bg);
 
-        // add xin chao
-        const hello = new Label("Xin Chào", {
-            fill: 'white',
-            fontSize: 18
-        });
-        hello.anchor.set(0, 1);
-        hello.position.set(20, Manager.height * .2);
-        this.addChild(hello);
-        
-        // add name
-        const name = new Label(data.userName, {
-            fill: 'white',
-            fontSize: 30,
-            fontWeight: 'bold'
-        });
-        name.anchor.set(0, 0);
-        name.position.set(20, hello.position.y + 4);
-        this.addChild(name);
+        const text = new CustomImage("text_ca", Manager.width * .8);
+        text.position.set(20, Manager.height * .05)
+        this.addChild(text);
 
-        // ban da dong hanh
-        const fromText = new Label("Bạn đã đồng hành cùng TAPTAP từ", {
+        const issuedText = new Label("Bạn đã tích được", {
             fill: 'white',
-            fontSize: 18
-        });
-        fromText.anchor.set(0, 1);
-        fromText.position.set(20, name.position.y + 80);
-        this.addChild(fromText);
+            fontSize: 20
+        })
+        issuedText.anchor.set(0, .5);
+        issuedText.position.set(20, text.position.y + text.height + 30);
+        this.addChild(issuedText);
 
-        const fromTextValue = new Label(data.startFrom, {
+        const issueTextValue = new Label(`${data.issuedPoint.toLocaleString()} VUI`, {
             fill: 'white',
             fontSize: 30,
-            fontWeight: 'bold'
-        });
-        fromTextValue.anchor.set(0, 0);
-        fromTextValue.position.set(20, fromText.position.y + 4);
-        this.addChild(fromTextValue);
+            fontFamily: 'Archia Bold'
+        })
+        issueTextValue.anchor.set(0, .5);
+        issueTextValue.position.set(20, issuedText.position.y + issuedText.height + 8)
+        this.addChild(issueTextValue);
 
-           // moi do ma da
-        const timeTitle = new Label("Mới đó mà đã", {
+        const issuedText2 = new Label("Bạn đã tiêu được", {
             fill: 'white',
-            fontSize: 18
-        });
-        timeTitle.anchor.set(0, 1);
-        timeTitle.position.set(20, fromTextValue.position.y + 80);
-        this.addChild(timeTitle);
-        
-        // 
-        const yearValue = new Label(`${data.year} Năm`, {
+            fontSize: 20,
+        })
+        issuedText2.anchor.set(0, .5);
+        issuedText2.position.set(20, issueTextValue.position.y + issueTextValue.height + 30);
+        this.addChild(issuedText2);
+
+        const issueTextValue2 = new Label(`${data.redeemPoint.toLocaleString()} VUI`, {
             fill: 'white',
             fontSize: 30,
-            fontWeight: 'bold'
-        });
-        yearValue.anchor.set(0, 0);
-        yearValue.position.set(20, timeTitle.position.y + 4);
-        this.addChild(yearValue);
+            fontFamily: 'Archia Bold'
+        })
+        issueTextValue2.anchor.set(0, .5);
+        issueTextValue2.position.set(20, issuedText2.position.y + issuedText2.height + 8)
+        this.addChild(issueTextValue2);
 
-        const monthValue = new Label(`${data.month} Tháng`, {
-            fill: 'white',
-            fontSize: 30,
-            fontWeight: 'bold'
-        });
-        monthValue.anchor.set(0, 0);
-        monthValue.position.set(20, timeTitle.position.y + 44);
-        this.addChild(monthValue);
-
-        const dayValue = new Label(`${data.day} Ngày`, {
-            fill: 'white',
-            fontSize: 30,
-            fontWeight: 'bold'
-        });
-        dayValue.anchor.set(0, 0);
-        dayValue.position.set(20, timeTitle.position.y + 84);
-        this.addChild(dayValue);
-
-        // hoat canh
-
-        // add phi thuyen
-
-        this.spaceship = new CustomImage("spaceship", Manager.width / 5);
-        this.spaceship.anchor.set(1, 0);
-        this.spaceship.position.set(Manager.width - 30, Manager.height / 5 * 3);
-
-        // add light
-        this.light = new CustomImage("light", this.spaceship.width * 2.5);
-        this.light.alpha = 0;
-        this.light.anchor.set(.5);
-        this.light.position.set(
-            this.spaceship.position.x - this.spaceship.width * 1.45, 
-            this.spaceship.position.y + this.spaceship.height * 2.3);
-        this.addChild(this.light);
-        this.addChild(this.spaceship);
-
-        // add gate
-        this.gate = new CustomImage("gate", Manager.width / 2)
-        this.gate.anchor.set(0, 1);
-        this.gate.position.set(0, Manager.height);
-
-        // add lemuck
-        this.lemuck = new CustomImage("lemuck_2", Manager.width / 3);
-        this.lemuck.anchor.set(0, 1);
-        this.lemuck.position.set(0, Manager.height - 50);
+        this.lemuck = new CustomImage("lemuck_agent", Manager.width / 3.5);
+        this.lemuck.anchor.set(.5, 1);
+        this.lemuck.position.set(Manager.width / 2, - this.lemuck.height);
         this.addChild(this.lemuck);
-        this.addChild(this.gate);
 
-        // add hanh tinh tim
-        const pinkPlannet = new CustomImage("pink_plannet", this.spaceship.width/2)
-        pinkPlannet.anchor.set(1, 0);
-        pinkPlannet.position.set(Manager.width + pinkPlannet.width * .3, Manager.height * .7);
-        this.addChild(pinkPlannet);
-
-        // add sao
-        const stars = new CustomImage("star", this.spaceship.width / 4);
-        stars.anchor.set(1, 0);
-        stars.position.set(this.spaceship.position.x - this.spaceship.width * 1.5, this.spaceship.position.y + 10)
-        this.addChild(stars)
-
-        this.founded = new CustomImage("founded", this.spaceship.width / 2);
-        this.founded.anchor.set(.5);
-        this.founded.position.set(
-            this.spaceship.position.x - this.spaceship.width/2, 
-            this.spaceship.position.y - 20);
-        this.founded.alpha = 0;
-        this.addChild(this.founded);
+        this.coins = new CustomImage("coin", Manager.width * .9);
+        this.coins.anchor.set(.5, 0);
+        this.coins.position.set(Manager.width / 2, Manager.height);
+        this.addChild(this.coins);
     }
-
     animate() {
-        const tl = gsap.timeline();
-        tl.to(this.lemuck.position, {x: this.gate.width * 0.65, duration: 1, ease: "sine.out"});
-        tl.to(this.light, {alpha: 1, duration: 1, ease: "circ.in"});
-        tl.to(this.founded, { alpha: 1, yoyo: true, repeat: -1, duration: 1.5});
+        if (this.animated == false) {
+            this.animated = true;
+            const tl = gsap.timeline();
+            tl.to(this.lemuck, { y: Manager.height - Manager.width * .21, duration: .75, ease: "circ.in" })
+            tl.to(this.coins, {y : Manager.height * .55, duration: .75, ease: "circ.out"})
+        } 
     }
-
 }

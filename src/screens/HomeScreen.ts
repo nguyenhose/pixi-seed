@@ -2,22 +2,23 @@ import { BlurFilter, Container, FederatedEvent, FederatedPointerEvent, Sprite } 
 import { Manager, ScreenContainer } from "../Manager";
 import { PrimaryButton } from "../components/shared/PrimaryButton";
 import { RecapItem } from "../components/item/RecapItem";
-import { spectral10 } from "../components/utils/theme";
 import { gsap } from "gsap/gsap-core";
+import { RecapZero } from "../components/item/RecapZero";
 import { RecapOne } from "../components/item/RecapOne";
-import { RecapTwo } from "../components/item/RecapTwo";
 import { RecapThree } from "../components/item/RecapThree";
 import { RecapFour } from "../components/item/RecapFour";
 import { RecapFive } from "../components/item/RecapFive";
+import { RecapTwo } from "../components/item/RecapTwo";
+import { RecapNoData } from "../components/item/RecapNoData";
 
 
 /** screen show up after loading */
 export class HomeScreen extends Container implements ScreenContainer {
     private recapContainer: Container;
     private recapState: RecapState = RecapState.IDLE;
-    private recapItemIndex = 0;
+    public recapItemIndex = 0;
     private recapPosition = 0;
-    
+
     // Dragging variables
     isDragging = false;
     dragStartX = 0;
@@ -28,28 +29,59 @@ export class HomeScreen extends Container implements ScreenContainer {
     constructor() {
         super();
         this.recapContainer = new Container();
-        // add items
-        for(let i = 0; i < 8; i++) {
-            switch (i) {
-                case 1:
-                    this.items.push(new RecapTwo());
-                    break;
-                case 2:
-                    this.items.push(new RecapThree());
-                    break;
-                case 3:
-                    this.items.push(new RecapFour());
-                    break;
-                case 4:
-                    this.items.push(new RecapFive());
-                    break;
-                default:
-                    // this.items.push(new RecapThree());
-                    this.items.push(new RecapOne());
+        const data = Manager.RecapData;
+        if (!data)  {
+            console.log("no recap data");
+            return;
+        }
+        // for no data user : no vui, no issue point, no voucher
+        if (!(data.topThree && data.topThree.length > 0) && !data.issuedPoint && !data.voucher) {
+            this.items.push(new RecapZero(this));
+            this.items[0].position.set(0 * Manager.width, 0);
+            this.recapContainer.addChild(this.items[0]);
+
+            this.items.push(new RecapOne());
+            this.items[1].position.set(1 * Manager.width, 0);
+            this.recapContainer.addChild(this.items[1]);
+
+            this.items.push(new RecapNoData());
+            this.items[2].position.set(2 * Manager.width, 0);
+            this.recapContainer.addChild(this.items[2]);
+        } else {
+            this.items.push(new RecapZero(this));
+
+            this.items[0].position.set(0 * Manager.width, 0);
+            this.recapContainer.addChild(this.items[0]);
+
+            this.items.push(new RecapOne());
+            this.items[1].position.set(1 * Manager.width, 0);
+            this.recapContainer.addChild(this.items[1]);
+            let count = 1
+
+            if (data.issuedPoint) {
+                count ++;
+                this.items.push(new RecapTwo());
+                this.items[2].position.set(2 * Manager.width, 0);
+                this.recapContainer.addChild(this.items[2]);
             }
-            this.items[i].position.set(i * Manager.width, 0);
-            this.recapContainer.addChild(this.items[i]);
-        
+
+            if (data.voucher) {
+                count ++;
+                this.items.push(new RecapThree());
+                this.items[count].position.set(count * Manager.width, 0);
+                this.recapContainer.addChild(this.items[count]);
+            }
+
+            if (data.topThree && data.topThree.length > 0) {
+                count++;
+                this.items.push(new RecapFour());
+                this.items[count].position.set(count * Manager.width, 0);
+                this.recapContainer.addChild(this.items[count]);
+            }
+            count++;
+            this.items.push(new RecapFive());
+            this.items[count].position.set(count * Manager.width, 0);
+            this.recapContainer.addChild(this.items[count]);
         }
 
         // navigation
@@ -58,7 +90,7 @@ export class HomeScreen extends Container implements ScreenContainer {
             onClick: () => {
                 this.recapItemIndex ++;
                 this.nextSlide();
-            } 
+            }
         })
         nextButton.position.set(Manager.width / 2, Manager.height - 200);
         this.addChild(this.recapContainer);
@@ -92,23 +124,24 @@ export class HomeScreen extends Container implements ScreenContainer {
         if (this.isDragging) {
             this.isDragging = false;
             const dragDelta = event.globalX - this.dragStartX;
-            console.log(dragDelta);
-            
+            console.log("drag end", dragDelta);
+     
             // Check if drag distance exceeds 1/3 of item width
             if (dragDelta > Manager.width / 3 && this.recapItemIndex > 0) {
                 this.recapItemIndex--;
-            } else if (dragDelta < -Manager.width / 3 && this.recapItemIndex < this.items.length) {
-                this.recapItemIndex++;
+            } else if (dragDelta < -Manager.width / 3) {
+                if (this.recapItemIndex + 1 < this.items.length) {
+                    this.recapItemIndex++;
+                }
             }
-  
-          // Animate to new position
-          this.nextSlide();
+            this.nextSlide(); 
+
         }
     }
 
 
     update(deltaTime: number): void {
-     
+
     }
 
     resize(): void {
@@ -123,8 +156,10 @@ export class HomeScreen extends Container implements ScreenContainer {
     }
 
     nextSlide() {
-        if (this.recapState == RecapState.IDLE && this.recapItemIndex < 7) {
+        if (this.recapState == RecapState.IDLE && this.recapItemIndex < this.items.length) {
             this.recapState = RecapState.MOVING;
+            console.log("slide to " + this.recapItemIndex);
+
             this.recapPosition = this.recapItemIndex * Manager.width * -1;
             gsap.to(this.recapContainer.position, { x: this.recapPosition, ease: "sine", onComplete: () => {
                 this.recapState = RecapState.IDLE;

@@ -278,6 +278,10 @@ export class Manager {
         shadow.alpha = .7
         Manager.app.stage.addChild(shadow);
     }
+
+    public static async CaptureScreenShot(container: Container) {
+        return await Manager.app.renderer.extract.base64(container);
+    }
 }
 export interface ScreenContainer extends Container {
     update(deltaTime: number): void;

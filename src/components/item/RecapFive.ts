@@ -12,6 +12,8 @@ export class RecapFive extends Container implements RecapItem {
     arrow: any;
     starDust: CustomImage;
     sunBlend: CustomImage;
+    animated: boolean = false;
+
     constructor() {
         super();
         const data = Manager.RecapData;
@@ -22,7 +24,11 @@ export class RecapFive extends Container implements RecapItem {
         
         const share_btn = new PrimaryButton({
             texture: "share_now",
-            width: Manager.width / 2.5
+            width: Manager.width / 2.5,
+            onClick: () => {
+                // this.shareFacebook();
+                this.sharing();
+            }
         })
         share_btn.position.set(Manager.width * .5, Manager.height - 60);
         this.addChild(share_btn);
@@ -32,15 +38,17 @@ export class RecapFive extends Container implements RecapItem {
         share_text.position.set(share_btn.position.x, share_btn.position.y - 80);
         this.addChild(share_text);
     
-
-        this.frame = new CustomImage("frame", Manager.width * 0.9);
+        const rankFrame = data.issuedPoint == 0 ? "frame_2" : "frame";
+        this.frame = new CustomImage(rankFrame, Manager.width * 0.9);
         this.frame.anchor.set(.5);
         this.frame.position.set(Manager.width / 2, share_text.position.y - 60 - this.frame.height / 2);
         this.addChild(this.frame);
 
-        const bestfriend = new Label("BẠN THÂN TAPTAP", {
+        const rank = data.issuedPoint == 0 ? "NEWBIE TAPTAP" : "BẠN THÂN TAPTAP";
+        const bestfriend = new Label(rank, {
             fill: 'white',
-            fontSize: 30
+            fontSize: 30,
+            fontFamily: 'Archia Bold'
         })
         bestfriend.anchor.set(0, 0);
         bestfriend.position.set(20, this.frame.position.y - this.frame.height * 0.9);
@@ -53,9 +61,10 @@ export class RecapFive extends Container implements RecapItem {
         bestfriendTitle.position.set(20, bestfriend.position.y - bestfriend.height / 2 - 5);
         this.addChild(bestfriendTitle);
 
-        const vui = new Label(`${data.issuedPoint} VUI`, {
+        const vui = new Label(`${data.issuedPoint.toLocaleString()} VUI`, {
             fill: 'white',
-            fontSize: 30
+            fontSize: 30,
+            fontFamily: 'Archia Bold'
         });
         vui.anchor.set(0, 0);
         vui.position.set(20, bestfriendTitle.position.y - bestfriendTitle.height / 2 - 40);
@@ -100,10 +109,50 @@ export class RecapFive extends Container implements RecapItem {
     }
 
     animate(): void {
-        const tl = gsap.timeline();
-        tl.to(this.sunBlend, {alpha: 1, duration: 1, ease: "sine.in"});
-        tl.to(this.starDust, {alpha: 1, duration: 1, ease: "sine.in"});
-        tl.to(this.arrow, {alpha: 1, duration: 1, ease: "sine.in"});
-        tl.to(this.plannet, {alpha: 1, duration: 1, ease: "sine.in"});
+        if (this.animated == false) {
+            this.animated = true;
+            const tl = gsap.timeline();
+            tl.to(this.sunBlend, {alpha: 1, duration: 1, ease: "sine.in"});
+            tl.to(this.starDust, {alpha: 1, duration: 1, ease: "sine.in"});
+            tl.to(this.arrow, {alpha: 1, duration: 1, ease: "sine.in"});
+            tl.to(this.plannet, {alpha: 1, duration: 1, ease: "sine.in"});
+        }
+    }
+
+    async sharing() {
+            const base64url =  await Manager.CaptureScreenShot(this);
+            const blob = await (await fetch(base64url)).blob();
+
+            if (blob) {
+                navigator.share({
+                    url: encodeURIComponent("youtube.com"),
+                    title: "MY TAPTAP's WRAPUP 2024",
+                    files: [new File([blob], "taptapshare.png", {type: "image/png"})]
+                })
+            }
+    }
+
+  
+      
+    async startCapture() {
+        const displayMediaOptions = {
+            video: {
+                displaySurface: "browser",
+            },
+            preferCurrentTab: false,
+            selfBrowserSurface: "exclude",
+            systemAudio: "include",
+            surfaceSwitching: "include",
+            monitorTypeSurfaces: "include",
+        };
+        let captureStream;
+        
+        try {
+            captureStream =
+            await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+        } catch (err) {
+            console.error(`Error: ${err}`);
+        }
+        return captureStream;
     }
 }

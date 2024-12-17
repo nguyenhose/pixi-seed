@@ -55,6 +55,9 @@ export const manifest = {
                 },
                 // font loading
                 { alias: 'Archia Medium', src: './fonts/Archia-Medium.otf' },
+                { alias: 'Archia Bold', src: './fonts/Archia-Bold.otf' },
+                { alias: 'Archia Regular', src: './fonts/Archia-Regular.otf' },
+                { alias: 'Archia Thin', src: './fonts/Archia-Thin.otf' },
                 // sound
                 {
                     alias: "click",
@@ -240,6 +243,10 @@ export const manifest = {
                     src: "./recap/screen_5/frame.png"
                 },
                 {
+                    alias: "frame_2",
+                    src: "./recap/screen_5/frame_2.png"
+                },
+                {
                     alias: "arrow",
                     src: "./recap/screen_5/arrow.png"
                 },
@@ -257,6 +264,52 @@ export const manifest = {
                 },
                 
             ]
-        }
+        }, 
+        {
+            name: "recap_6",
+            assets: [
+                {
+                    alias: "background_6",
+                    src: "./recap/screen_6/BG_6.png"
+                },
+                {
+                    alias: "coin",
+                    src: "./recap/screen_6/Coin.png"
+                },
+                {
+                    alias: "lemuck_agent",
+                    src: "./recap/screen_6/LEMUCK_3.png"
+                },
+                {
+                    alias: "text_ca",
+                    src: "./recap/screen_6/cacung.png"
+                }
+            ]
+        },
+        {
+            name: "recap_7",
+            assets: [
+                {
+                    alias: "background_7",
+                    src: "./recap/screen_7/BG_7.png"
+                },
+                {
+                    alias: "coin_2",
+                    src: "./recap/screen_7/coin_2.png"
+                },
+                {
+                    alias: "lemuck_7",
+                    src: "./recap/screen_7/lemuck.png"
+                },
+                {
+                    alias: "pig",
+                    src: "./recap/screen_7/pink_pig.png"
+                },
+                {
+                    alias: "text_memory",
+                    src: "./recap/screen_7/memory.png"
+                },
+            ]
+        },
     ]
 }

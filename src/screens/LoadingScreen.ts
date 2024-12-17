@@ -78,7 +78,6 @@ export class LoadingScreen extends Container implements ScreenContainer {
 
         const bundleIds = manifest.bundles.map(b => b.name);
         await Assets.loadBundle(bundleIds, (progress: number) => {
-            console.log(progress);
             fillbar.scale.x = progress * bg.width;
         });
     }
@@ -152,11 +151,14 @@ export class LoadingScreen extends Container implements ScreenContainer {
     }
 
     onGetData(data: any) {
+        if (!data) return;
+        if (!data.delta) return;
+        
         this.dataLoaded = true;
         var d = new Date();
-        d.setDate(d.getDate() - data.day_from_register)
+        d.setDate(d.getDate() - data.delta)
         const convertDate = dateToDmy(d)
-        const convertFromDays = getFormatedStringFromDays(data.day_from_register);
+        const convertFromDays = getFormatedStringFromDays(data.delta);
         
         Manager.RecapData = {
             userName: data.name,

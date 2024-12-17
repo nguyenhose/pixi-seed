@@ -11,6 +11,7 @@ export class RecapThree extends Container implements RecapItem {
     voucher_sf: CustomImage;
     voucher_ws: CustomImage;
     voucher_pz: CustomImage;
+    animated: boolean = false;
 
     constructor() {
         super();
@@ -27,10 +28,10 @@ export class RecapThree extends Container implements RecapItem {
         text3.position.set(20, Manager.height * 0.1)
         this.addChild(text3);
 
-        const voucherNo = new Label(`${data.voucher} VOUCHER`, {
+        const voucherNo = new Label(`${data.voucher} VOUCHER${data.voucher > 1 ? 'S' : ''}`, {
             fontSize: 30,
             fill: 'white',
-            fontWeight: 'bold'
+            fontFamily: 'Archia Bold'
         })
         voucherNo.anchor.set(0, 0);
         voucherNo.position.set(20, text3.position.y + 30 + text3.height);
@@ -60,11 +61,14 @@ export class RecapThree extends Container implements RecapItem {
     }
     
     animate(): void {
-        const tl = gsap.timeline();
-        tl.to(this.voucher_nd, {y: Manager.height - 40, duration: 1, ease: "elastic.inOut"});
-        tl.to(this.voucher_sf, {y: Manager.height - this.voucher_nd.height - 10, duration: 1, ease: "elastic.inOut"});
-        tl.to(this.voucher_ws, {y: Manager.height - this.voucher_nd.height + 10, duration: 1, ease: "elastic.inOut"});
-        tl.to(this.voucher_pz, {y: Manager.height - this.voucher_nd.height - 60, duration: 1, ease: "bounce.out"})
+        if (this.animated == false) {
+            this.animated = true;
+            const tl = gsap.timeline();
+            tl.to(this.voucher_nd, {y: Manager.height - 40, duration: 1, ease: "elastic.inOut"});
+            tl.to(this.voucher_sf, {y: Manager.height - this.voucher_nd.height - 10, duration: 1, ease: "elastic.inOut"});
+            tl.to(this.voucher_ws, {y: Manager.height - this.voucher_nd.height + 10, duration: 1, ease: "elastic.inOut"});
+            tl.to(this.voucher_pz, {y: Manager.height - this.voucher_nd.height - 60, duration: 1, ease: "bounce.out"})
+        }
     }
 
 }
