@@ -56,8 +56,6 @@ export const manifest = {
                 // font loading
                 { alias: 'Archia Medium', src: './fonts/Archia-Medium.otf' },
                 { alias: 'Archia Bold', src: './fonts/Archia-Bold.otf' },
-                { alias: 'Archia Regular', src: './fonts/Archia-Regular.otf' },
-                { alias: 'Archia Thin', src: './fonts/Archia-Thin.otf' },
                 // sound
                 {
                     alias: "click",
@@ -106,10 +104,6 @@ export const manifest = {
                 {
                     alias: "light",
                     src: "./recap/screen_2/LIGHT.png"
-                },
-                {
-                    alias: "BG_2",
-                    src: "./recap/screen_2/BG_2.png"
                 },
                 {
                     alias: "lemuck_2",

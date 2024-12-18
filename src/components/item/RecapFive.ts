@@ -120,16 +120,20 @@ export class RecapFive extends Container implements RecapItem {
     }
 
     async sharing() {
+        try {
             const base64url =  await Manager.CaptureScreenShot(this);
             const blob = await (await fetch(base64url)).blob();
 
-            if (blob) {
+            if (blob && navigator && navigator.canShare()) {
                 navigator.share({
                     url: encodeURIComponent("youtube.com"),
                     title: "MY TAPTAP's WRAPUP 2024",
-                    files: [new File([blob], "taptapshare.png", {type: "image/png"})]
+                    files: [new File([blob], "tt_wrapup_2024.png", {type: "image/png"})]
                 })
             }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
   

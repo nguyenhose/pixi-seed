@@ -41,24 +41,24 @@
 	
 		  (function () {
 			/* Original code */
-            // global.BUILD = "#BUILD";
-			// global.ENV = {
-			//   name: "stag",
-			//   apiEndPoint: "https://lb-stg.thitranbaovui.com/baucua/v1",
-			//   assetEndPoint: "https://lb-stg.thitranbaovui.com/baucua",
-			//   ssl: true,
-			//   host: "lb-stg.thitranbaovui.com/baucua",
-			//   port: 80,
-			// };
             global.BUILD = "#BUILD";
 			global.ENV = {
-			  name: "dev",
-			  apiEndPoint: "http://192.168.2.171:3001",
-			  assetEndPoint: "http://192.168.2.171:3001",
+			  name: "prod",
+			  apiEndPoint: "https://lb.thitranbaovui.com/wrapup",
+			  assetEndPoint: "https://lb.thitranbaovui.com/wrapup",
 			  ssl: true,
-			  host: "192.168.2.171",
-			  port: 3001,
+			  host: "lb.thitranbaovui.com/wrapup",
+			  port: 80,
 			};
+            // global.BUILD = "#BUILD";
+			// global.ENV = {
+			//   name: "dev",
+			//   apiEndPoint: "http://192.168.2.171:3001",
+			//   assetEndPoint: "http://192.168.2.171:3001",
+			//   ssl: true,
+			//   host: "192.168.2.171",
+			//   port: 3001,
+			// };
 		  }.call(this));
 		}.call(this));
 	  </script>
