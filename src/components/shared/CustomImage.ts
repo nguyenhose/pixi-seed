@@ -9,10 +9,24 @@ import { TextStyleOptions, Text, TextStyle, Sprite, SpriteOptions, Texture } fro
  */
 export class CustomImage extends Sprite {
     constructor(texture: string, size: number) {
-        super({ texture: Texture.from(texture) });
+        const _texture = Texture.from(texture);
+
+        super({ texture: _texture });
         const ratio = this.width / this.height;
         
         this.width = size;
         this.height = this.width / ratio;
+    }
+}
+
+export class CustomImageHeight extends Sprite {
+    constructor(texture: string, size: number) {
+        const _texture = Texture.from(texture);
+
+        super({ texture: _texture });
+        const ratio = this.width / this.height;
+        
+        this.height = size;
+        this.width = this.height * ratio;
     }
 }

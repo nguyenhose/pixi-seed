@@ -5,7 +5,7 @@ gsap.registerPlugin(PixiPlugin);
 
 import { AudioConfig, GameConfig, PlayerData } from "./common/GameState";
 import { QuickSetting } from "./screens/popup/QuickSetting";
-import { clamp } from "./components/utils/timer";
+import { clamp } from "./components/utils/misc";
 import { Tutorial } from "./screens/popup/Tutorial";
 import { CLIENT_EVENTS, pixiEmitter } from "./services/EventEmitter";
 import { Toast } from "./screens/popup/Toast";
